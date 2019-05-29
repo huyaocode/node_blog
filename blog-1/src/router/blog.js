@@ -1,6 +1,6 @@
 const {
-  getList, 
-  getDetail, 
+  getList,
+  getDetail,
   newBlog,
   updateBlog,
   deleteBlog
@@ -34,7 +34,7 @@ const handleBlogRouter = (req, res) => {
   // 更新博客
   if (method === 'POST' && path === '/api/blog/update') {
     const result = updateBlog(id, req.body)
-    if(result) {
+    if (result) {
       return new SuccessModel(result)
     } else {
       return new ErrorModel('更新失败')
@@ -44,7 +44,7 @@ const handleBlogRouter = (req, res) => {
   // 删除博客
   if (method === 'POST' && path === '/api/blog/del') {
     const result = deleteBlog(id)
-    if(result) {
+    if (result) {
       return new SuccessModel(result)
     } else {
       return new ErrorModel('删除失败')

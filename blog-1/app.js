@@ -29,6 +29,11 @@ const getPostData = req => {
   return promise
 }
 
+/**
+ * 处理请求
+ * @param {*} req
+ * @param {*} res
+ */
 const serverHandle = (req, res) => {
   // 设置返回格式 JSON
   res.setHeader('Content-type', 'application/json')
