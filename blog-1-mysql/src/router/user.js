@@ -7,11 +7,13 @@ const handleUserRouter = (req, res) => {
   if (method === 'POST' && path === '/api/user/login') {
     const { username, password } = req.body
     const result = loginCheck(username, password)
-    if (result) {
-      return new SuccessModel()
-    } else {
-      return new ErrorModel('登录失败')
-    }
+    return result.then(data => {
+      if (data.realname) {
+        return new SuccessModel(data.realname)
+      } else {
+        return new ErrorModel('登录失败')
+      }
+    })
   }
 }
 
