@@ -133,3 +133,8 @@ OkPacket {
   protocol41: true,
   changedRows: 1 }
 ```
+
+
+### 各表字段
+![](img/users_table.png)
+![](img/blogs.png)
