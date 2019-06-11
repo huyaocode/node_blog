@@ -1,13 +1,16 @@
-const { exec } = require('../db/mysql')
+const xss = require('xss')
+const { exec, escape } = require('../db/mysql')
 
 const getList = (author, keywords) => {
+  author = escape(author)
+  keywords = escape(`%${keywords}%`)
   // 加一个 1=1 来占个位，为了让语法正确，方便添加条件
   let sql = `select * from blogs where 1=1 `
   if (author) {
-    sql += `and author='${author}' `
+    sql += `and author=${author} `
   }
   if (keywords) {
-    sql += `and title like '%${keywords}%'`
+    sql += `and title like ${keywords}`
   }
   sql += `order by createtime desc`
   // 返回 promise
@@ -15,7 +18,8 @@ const getList = (author, keywords) => {
 }
 
 const getDetail = id => {
-  const sql = `select * from blogs where id='${id}';`
+  id = escape(id)
+  const sql = `select * from blogs where id=${id};`
   // 返回的是一个数组，我们只取也只能取第一个
   return exec(sql).then(rows => {
     return rows[0]
@@ -27,9 +31,13 @@ const newBlog = (blogData = {}) => {
   const {title, content, author} = blogData
   const createTime = Date.now();
   
+  title = xss(escape(title))
+  content = xss(escape(content))
+  author = escape(author)
+
   const sql = `
     insert into blogs (title, content, createtime, author)
-    values ('${title}', '${content}', ${createTime}, '${author}');
+    values (${title}, ${content}, ${createTime}, ${author});
   `
   // 返回的是一个数据结构
   return exec(sql).then(insertData => {
@@ -41,10 +49,13 @@ const newBlog = (blogData = {}) => {
 
 const updateBlog = (id, blogData = {}) => {
   const {title, content} = blogData;
+  title = xss(escape(title))
+  content = xss(escape(content))
+  id = escape(id)
   const sql = `
     update blogs 
-    set title='${title}', content='${content}'
-    where id='${id}';
+    set title=${title}, content=${content}
+    where id=${id};
   `;
 
   return exec(sql).then(updateData => {
@@ -56,7 +67,9 @@ const updateBlog = (id, blogData = {}) => {
 }
 
 const deleteBlog = (id, author) => {
-  const sql = `delete from blogs where id='${id}' and author='${author}';`;
+  id = escape(id)
+  author = escape(author)
+  const sql = `delete from blogs where id=${id} and author=${author};`;
   return exec(sql).then(delData => {
     if(delData.affectedRows > 0) {
       return true

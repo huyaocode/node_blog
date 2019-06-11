@@ -9,16 +9,24 @@ nodejs个人博客，使用：Node.js+Express+Koa
  - 安全
 
 ### 技术
- - http
- - stream
- - session
- - mysql
- - redis
- - nginx
+ - http 网络服务
+ - stream 读写文件
+ - session 用户登录
+ - mysql 存储博客数据
+ - redis 存储session
+ - nginx 反向代理
  - pm2
 
 ### 架构
 ![](img/jiagou.png)
+
+### server端与前端区别
+ - 服务稳定性
+ - 内存CPU（优化，拓展）
+ - 日志记录
+ - 安全（登录验证等）
+ - 集群扩展
+
 
 ### nvm
 nvm是nodejs版本管理工具，可切换多个Node版本
@@ -100,3 +108,6 @@ nvm是nodejs版本管理工具，可切换多个Node版本
 ### 日志分析
  - 日志按行存储
  - 使用Nodejs的readline（基于stream，效率高）
+
+
+## [后端安全](后端安全.md)
